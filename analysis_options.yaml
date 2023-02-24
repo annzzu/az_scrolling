@@ -1,0 +1,122 @@
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at
+  # https://dart-lang.github.io/linter/lints/index.html.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    always_declare_return_types: true
+
+    # self-explanatory
+    always_put_required_named_parameters_first: true
+
+    # BAD: import '../../folder/file.dart';
+    # GOOD: import 'package:project/folder/file.dart';
+    always_use_package_imports: true
+
+    # BAD: bool isZero = value == 0 ? true : false;
+    # GOOD: bool isZero = value == 0;
+    avoid_bool_literals_in_conditional_expressions: true
+
+    # BAD: arr.forEach((e) => print(e.toString()));
+    # GOOD: for (final e in arr) print(e.toString());
+    # `false` disables this rule
+    avoid_function_literals_in_foreach_calls: false
+
+    # use `debugPrint(e.toString())` instead of `print(e)`
+    avoid_print: true
+
+    # prefer using lowerCamelCase for constant names.
+    # `false` disables this rule (to stay consistent in project with already UPPER_CASE names)
+    constant_identifier_names: false
+
+    # BAD: static Foo foo() => Foo();
+    # GOOD: Foo();
+    prefer_constructors_over_static_methods: true
+
+    # self-explanatory
+    prefer_final_locals: true
+
+    # BAD: if (widget.func != null) widget.func();
+    # GOOD: widget.func?.call()
+    prefer_null_aware_method_calls: true
+
+    # self-explanatory
+    prefer_single_quotes: true
+
+    # require_trailing_commas: true
+
+    # BAD: Container(width: 20, child: Container(), height: 20);
+    # GOOD: Container(width: 20, height: 20, child: Container());
+    sort_child_properties_last: true
+
+    # sort_pub_dependencies: true
+
+    # self-explanatory
+    sort_unnamed_constructors_first: true
+
+    # BAD: Future<void> func() async { return await someAsyncFunc(); }
+    # GOOD: Future<void> func() async { return someAsyncFunc(); }
+    unnecessary_await_in_return: true
+
+    # BAD: arr.map((e) => myWidgetBuilder(e));
+    # GOOD: arr.map(myWidgetBuilder);
+    unnecessary_lambdas: true
+
+    # avoid using `late` keyword for variables that are assigned before initState call happens
+    unnecessary_late: true
+
+    # self-explanatory
+    unnecessary_parenthesis: true
+
+    # use_enums: true
+
+    # BAD: final int i = value != null ? value : 0;
+    # GOOD: final int i = value ?? 0;
+    use_if_null_to_convert_nulls_to_bools: true
+
+    # BAD: final bool isEven = number % 2 == 0;
+    # GOOD: final bool isEven = number.isEven;
+    use_is_even_rather_than_modulo: true
+
+    # BAD: const Duration(seconds: 0);
+    # GOOD: Duration.zero;
+    use_named_constants: true
+
+    # BAD:
+    # String foo() {
+    #   final buffer = '';
+    #   for (int i = 0; i < 10; i++) {
+    #     buffer += 'a';
+    #   }
+    #   return buffer;
+    # }
+    #
+    # GOOD:
+    # String foo() {
+    #   final buffer = StringBuffer();
+    #   for (int i = 0; i < 10; i++) {
+    #     buffer.write('a');
+    #   }
+    #   return buffer.toString();
+    # }
+    use_string_buffers: true
+    # Additional information about this file can be found at
+    # https://dart.dev/guides/language/analysis-options
