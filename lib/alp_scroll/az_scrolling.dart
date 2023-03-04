@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:az_scrolling/alp_scroll/alphabet.dart';
+import 'package:az_scrolling/alp_scroll/alphabet_node.dart';
+import 'package:az_scrolling/alp_scroll/alpha_model.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-import 'alphabet_node.dart';
 
 class AZScrolling extends StatefulWidget {
   const AZScrolling({
@@ -275,16 +275,6 @@ class _AZScrollingState extends State<AZScrolling> {
       ],
     );
   }
-}
-
-class AlphaModel {
-  final String key;
-  final String? secondaryKey;
-
-  AlphaModel(
-    this.key, {
-    this.secondaryKey,
-  });
 }
 
 extension AligmnetExtension on Alignment {
