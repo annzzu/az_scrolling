@@ -112,7 +112,6 @@ class _AZScrollingState extends State<AZScrolling> {
   final letterKey = GlobalKey();
   List<AlphaModel> _list = [];
   bool isLoading = false;
-  bool isFocused = false;
   final key = GlobalKey();
 
   @override
@@ -188,16 +187,6 @@ class _AZScrollingState extends State<AZScrolling> {
         opacityAnimationWeights: const [40, 20, 40]);
   }
 
-  void onVerticalDrag(Offset offset) {
-    final int index = getCurrentIndex(offset.dy);
-    if (index < 0 || index >= _filteredAlphabets.length) return;
-    _selectedIndexNotifier.value = index;
-    setState(() {
-      isFocused = true;
-    });
-    scrollToIndex(index);
-  }
-
   TextStyle get textStyle =>
       widget.unselectedTextStyle ??
       const TextStyle(
@@ -230,11 +219,6 @@ class _AZScrollingState extends State<AZScrolling> {
             padding: const EdgeInsets.symmetric(horizontal: 2),
             child: SingleChildScrollView(
               child: GestureDetector(
-                onVerticalDragStart: (z) => onVerticalDrag(z.localPosition),
-                onVerticalDragUpdate: (z) => onVerticalDrag(z.localPosition),
-                onVerticalDragEnd: (z) => setState(() {
-                  isFocused = false;
-                }),
                 child: ValueListenableBuilder<int>(
                     valueListenable: _selectedIndexNotifier,
                     builder: (__, int selected, _) {
@@ -258,20 +242,6 @@ class _AZScrollingState extends State<AZScrolling> {
             ),
           ),
         ),
-        isFocused
-            ? ValueListenableBuilder<Offset>(
-                valueListenable: positionNotifier,
-                builder: (__, Offset position, _) => Positioned(
-                      right: widget.alignment.isRight ? 40 : null,
-                      left: widget.alignment.isRight ? 40 : null,
-                      top: position.dy,
-                      child: widget.overlayWidget != null
-                          ? widget.overlayWidget!(
-                              _filteredAlphabets[_selectedIndexNotifier.value],
-                            )
-                          : Container(),
-                    ))
-            : Container()
       ],
     );
   }
