@@ -112,7 +112,6 @@ class _AZScrollingState extends State<AZScrolling> {
   final letterKey = GlobalKey();
   List<AlphaModel> _list = [];
   bool isLoading = false;
-  final key = GlobalKey();
 
   @override
   void initState() {
@@ -147,6 +146,13 @@ class _AZScrollingState extends State<AZScrolling> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _selectedIndexNotifier.dispose();
+    positionNotifier.dispose();
+  }
+
+  @override
   void didUpdateWidget(covariant AZScrolling oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.list != widget.list ||
@@ -178,10 +184,11 @@ class _AZScrollingState extends State<AZScrolling> {
   }
 
   Future<void> scrollToIndex(int x) {
+    _selectedIndexNotifier.value = x;
     final int index = firstIndexPosition[_filteredAlphabets[x].toLowerCase()]!;
     return itemScrollController.scrollTo(
         index: index,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 200),
         curve: Curves.linear,
         alignment: 0,
         opacityAnimationWeights: const [40, 20, 40]);
@@ -212,35 +219,26 @@ class _AZScrollingState extends State<AZScrolling> {
           itemCount: _list.length,
           itemBuilder: (_, idx) => widget.itemBuilder(_, idx, _list[idx].key),
         ),
-        Align(
+        Container(
           alignment: widget.alignment,
-          child: Container(
-            key: key,
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: SingleChildScrollView(
-              child: GestureDetector(
-                child: ValueListenableBuilder<int>(
-                    valueListenable: _selectedIndexNotifier,
-                    builder: (__, int selected, _) {
-                      return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(
-                            _filteredAlphabets.length,
-                            (x) => AlphabetNode(
-                                text: _filteredAlphabets[x],
-                                selected: x == selected,
-                                textStyle: textStyle,
-                                selectedTextStyle: selectedTextStyle,
-                                letterKey: letterKey,
-                                onCallBack: () {
-                                  _selectedIndexNotifier.value = x;
-                                  scrollToIndex(x);
-                                }),
-                          ));
-                    }),
-              ),
-            ),
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: ValueListenableBuilder<int>(
+              valueListenable: _selectedIndexNotifier,
+              builder: (__, int selected, _) {
+                return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      _filteredAlphabets.length,
+                      (x) => AlphabetNode(
+                        text: _filteredAlphabets[x],
+                        selected: x == selected,
+                        textStyle: textStyle,
+                        selectedTextStyle: selectedTextStyle,
+                        letterKey: letterKey,
+                        onCallBack: () => scrollToIndex(x),
+                      ),
+                    ));
+              }),
         ),
       ],
     );
